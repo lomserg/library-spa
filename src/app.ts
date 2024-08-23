@@ -1,14 +1,11 @@
 import MainView, { Abstract } from './views/mainView/mainView';
-const hello = 'hello';
 interface AppComponent {
   routes: Route[];
 }
-
 interface Route {
   path: string;
   view: new () => Abstract;
 }
-
 class App implements AppComponent {
   private currentView: Abstract | null = null; // Declare currentView as a class property
 
