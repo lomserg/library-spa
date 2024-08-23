@@ -1,7 +1,9 @@
-import MainView, { Abstract } from "./views/mainView/mainView";
+import MainView, { Abstract } from './views/mainView/mainView';
+const hello = 'hello';
 interface AppComponent {
   routes: Route[];
 }
+
 interface Route {
   path: string;
   view: new () => Abstract;
@@ -10,9 +12,9 @@ interface Route {
 class App implements AppComponent {
   private currentView: Abstract | null = null; // Declare currentView as a class property
 
-  routes = [{ path: "", view: MainView }];
+  routes = [{ path: '', view: MainView }];
   constructor() {
-    window.addEventListener("hashchange", this.route.bind(this));
+    window.addEventListener('hashchange', this.route.bind(this));
     this.route();
   }
 

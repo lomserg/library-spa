@@ -1,9 +1,11 @@
 import { AbstractView } from "../../components/view";
+
 export interface Abstract {
   setTitle: (title: string) => void;
   render: () => void;
   destroy: () => void;
 }
+
 class MainView extends AbstractView implements Abstract {
   constructor() {
     super();
