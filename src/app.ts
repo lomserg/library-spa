@@ -1,15 +1,23 @@
 import MainView, { Abstract } from './views/mainView/mainView';
+interface AppState {
+  favorites: string[]; // Define your app state with correct properties
+}
+
 interface AppComponent {
   routes: Route[];
 }
+
 interface Route {
   path: string;
-  view: new () => Abstract;
+  view: new (appState: AppState) => Abstract;
 }
 class App implements AppComponent {
+  private appState: AppState = {
+    favorites: [],
+  };
   private currentView: Abstract | null = null; // Declare currentView as a class property
 
-  routes = [{ path: '', view: MainView }];
+  routes: Route[] = [{ path: '', view: MainView }];
   constructor() {
     window.addEventListener('hashchange', this.route.bind(this));
     this.route();
@@ -27,7 +35,7 @@ class App implements AppComponent {
     const ViewClass = matchingRoute.view;
 
     // Instantiate and render the new view
-    this.currentView = new ViewClass();
+    this.currentView = new ViewClass(this.appState);
     this.currentView.render();
   }
 }
