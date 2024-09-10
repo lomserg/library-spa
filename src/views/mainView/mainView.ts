@@ -1,4 +1,4 @@
-import { AbstractView } from '../../components/view';
+import { AbstractView } from '../../common/view';
 import onChange from 'on-change';
 
 export interface Abstract {
@@ -8,14 +8,16 @@ export interface Abstract {
 }
 
 interface MainState {
-  list: number[]; // Adjusted the type to be more generic; replace 'any' as needed
+  list: number[];
   loading: boolean;
-  searchQuery: string | undefined;
+  searchQuery?: string; // 'undefined' is implicit for optional properties
   offSet: number;
 }
+
 interface AppState {
-  favorites: string[]; // Define your app state with correct properties
+  favorites: string[];
 }
+
 class MainView extends AbstractView implements Abstract {
   state: MainState = {
     list: [],
@@ -25,24 +27,34 @@ class MainView extends AbstractView implements Abstract {
   };
 
   constructor(private appState: AppState) {
-    // Ensure appState is stored in a private property
     super();
     this.appState = appState;
+    // Track changes in appState using 'onChange'
     this.appState = onChange(this.appState, this.appStateHook.bind(this));
-    this.setTitle('Поиск книг');
+    this.setTitle('Поиск книг'); // Use setTitle correctly, assuming it's implemented in AbstractView
   }
 
-  appStateHook() {}
+  // Hook to handle appState changes
+  appStateHook(path: string) {
+    if (path === 'favorites') {
+      console.log(`Favorites updated: ${this.appState.favorites}`);
+    }
+  }
+
   render() {
     const main = document.createElement('div');
     main.innerHTML = `Число книг: ${this.appState.favorites.length}`;
     this.app?.append(main);
+
+    // Simulating a change in appState
+    this.appState.favorites.push('db');
   }
+
   destroy(): void {
-    // Implement the destroy method to clean up, if necessary
     if (this.app) {
       this.app.innerHTML = '';
     }
   }
 }
+
 export default MainView;

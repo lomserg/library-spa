@@ -8,7 +8,7 @@ export class AbstractView implements Abstract {
   protected app: HTMLElement | null;
 
   constructor() {
-    this.app = document.getElementById("root");
+    this.app = document.getElementById('root');
   }
   setTitle(title: string): void {
     document.title = title;

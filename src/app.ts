@@ -1,5 +1,5 @@
 import MainView, { Abstract } from './views/mainView/mainView';
-interface AppState {
+export interface AppState {
   favorites: string[]; // Define your app state with correct properties
 }
 
