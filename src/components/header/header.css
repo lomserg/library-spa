@@ -1,0 +1,33 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  margin-top: 20px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.menu__item {
+  display: flex;
+  gap: 5px;
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.menu__item:visited {
+  color: var(--black);
+}
+
+.menu__counter {
+  font-size: 12px;
+  line-height: 24px;
+  border: 1px solid var(--black);
+  border-radius: 50%;
+  padding: 0 10px;
+}

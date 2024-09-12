@@ -1,5 +1,7 @@
 import { AbstractView } from '../../common/view';
 import onChange from 'on-change';
+import { Header } from '../../components/header/header';
+import { Search } from '../../components/search/serach';
 
 export interface Abstract {
   setTitle: (title: string) => void;
@@ -7,7 +9,7 @@ export interface Abstract {
   destroy: () => void;
 }
 
-interface MainState {
+export interface MainState {
   list: number[];
   loading: boolean;
   searchQuery?: string; // 'undefined' is implicit for optional properties
@@ -43,11 +45,18 @@ class MainView extends AbstractView implements Abstract {
 
   render() {
     const main = document.createElement('div');
-    main.innerHTML = `Число книг: ${this.appState.favorites.length}`;
+    main.append(new Search(this.state).render());
     this.app?.append(main);
 
     // Simulating a change in appState
-    this.appState.favorites.push('db');
+    // this.appState.favorites.push('db');
+    this.renderHeader();
+  }
+
+  renderHeader() {
+    const header = new Header(this.appState);
+    const headerHtml = header.render();
+    this.app?.prepend(headerHtml);
   }
 
   destroy(): void {
