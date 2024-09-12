@@ -8,6 +8,14 @@ export class Search extends DivComponent {
     super();
     this.state = state;
   }
+
+  search() {
+    const value = this.el.querySelector('input')?.value;
+    if (value !== this.state.searchQuery) {
+      this.state.searchQuery = value;
+    }
+  }
+
   render(): HTMLDivElement {
     this.el.classList.add('search');
     this.el.innerHTML = `
@@ -19,6 +27,9 @@ export class Search extends DivComponent {
     <img src="/static/search.svg" />
    </button>
     `;
+    this.el
+      .querySelector('button')
+      ?.addEventListener('click', this.search.bind(this));
     return this.el;
   }
 }

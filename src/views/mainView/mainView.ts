@@ -2,6 +2,7 @@ import { AbstractView } from '../../common/view';
 import onChange from 'on-change';
 import { Header } from '../../components/header/header';
 import { Search } from '../../components/search/serach';
+import { CardList } from '../../components/card-list/cardList';
 
 export interface Abstract {
   setTitle: (title: string) => void;
@@ -33,6 +34,7 @@ class MainView extends AbstractView implements Abstract {
     this.appState = appState;
     // Track changes in appState using 'onChange'
     this.appState = onChange(this.appState, this.appStateHook.bind(this));
+    this.state = onChange(this.state, this.stateHook.bind(this));
     this.setTitle('Поиск книг'); // Use setTitle correctly, assuming it's implemented in AbstractView
   }
 
@@ -43,10 +45,44 @@ class MainView extends AbstractView implements Abstract {
     }
   }
 
+  async stateHook(path: string) {
+    console.log('State changed:', path); // Add this line for debugging
+
+    if (path === 'searchQuery') {
+      this.state.loading = true;
+      this.render(); // Trigger re-render to show the loading state
+      const data = await this.loading(
+        this.state.searchQuery,
+        this.state.offSet,
+      );
+      this.state.loading = false;
+      this.state.list = data.docs;
+      console.log(this.state.list.length);
+      this.render(); // Re-render again to update with fetched data
+    }
+
+    if (path === 'list') {
+      this.render();
+    }
+  }
+
+  async loading(q: string | undefined, offset: number) {
+    const res = await fetch(
+      `https://openlibrary.org/search.json?q=${q}&offset=${offset}`,
+    );
+    return res.json();
+  }
   render() {
     const main = document.createElement('div');
-    main.append(new Search(this.state).render());
+    if (this.app) {
+      this.app.innerHTML = '';
+    }
     this.app?.append(main);
+    const cardList = new CardList(this.appState, this.state);
+    const cardListHtml = cardList.render();
+
+    main.append(new Search(this.state).render());
+    main.append(cardListHtml);
 
     // Simulating a change in appState
     // this.appState.favorites.push('db');
