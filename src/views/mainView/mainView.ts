@@ -3,7 +3,7 @@ import onChange from 'on-change';
 import { Header } from '../../components/header/header';
 import { Search } from '../../components/search/serach';
 import { CardList } from '../../components/card-list/cardList';
-
+import { CardsState } from '../../components/card/cardInterface';
 export interface Abstract {
   setTitle: (title: string) => void;
   render: () => void;
@@ -11,7 +11,8 @@ export interface Abstract {
 }
 
 export interface MainState {
-  list: number[];
+  list: CardsState[];
+  numFound: number;
   loading: boolean;
   searchQuery?: string; // 'undefined' is implicit for optional properties
   offSet: number;
@@ -24,6 +25,7 @@ interface AppState {
 class MainView extends AbstractView implements Abstract {
   state: MainState = {
     list: [],
+    numFound: 0,
     loading: false,
     searchQuery: undefined,
     offSet: 0,
@@ -57,7 +59,9 @@ class MainView extends AbstractView implements Abstract {
       );
       this.state.loading = false;
       this.state.list = data.docs;
+      this.state.numFound = data.numFound;
       console.log(this.state.list.length);
+      console.log(data);
       this.render(); // Re-render again to update with fetched data
     }
 
