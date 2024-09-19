@@ -4,6 +4,7 @@ import { Header } from '../../components/header/header';
 import { Search } from '../../components/search/serach';
 import { CardList } from '../../components/card-list/cardList';
 import { CardsState } from '../../components/card/cardInterface';
+import { AppState } from '../../app';
 export interface Abstract {
   setTitle: (title: string) => void;
   render: () => void;
@@ -18,10 +19,6 @@ export interface MainState {
   offSet: number;
 }
 
-interface AppState {
-  favorites: string[];
-}
-
 class MainView extends AbstractView implements Abstract {
   state: MainState = {
     list: [],
@@ -31,10 +28,8 @@ class MainView extends AbstractView implements Abstract {
     offSet: 0,
   };
 
-  constructor(private appState: AppState) {
-    super();
-    this.appState = appState;
-    // Track changes in appState using 'onChange'
+  constructor(appState: AppState) {
+    super(appState);
     this.appState = onChange(this.appState, this.appStateHook.bind(this));
     this.state = onChange(this.state, this.stateHook.bind(this));
     this.setTitle('Поиск книг'); // Use setTitle correctly, assuming it's implemented in AbstractView
@@ -44,6 +39,7 @@ class MainView extends AbstractView implements Abstract {
   appStateHook(path: string) {
     if (path === 'favorites') {
       console.log(`Favorites updated: ${this.appState.favorites}`);
+      this.render();
     }
   }
 
@@ -100,9 +96,8 @@ class MainView extends AbstractView implements Abstract {
   }
 
   destroy(): void {
-    if (this.app) {
-      this.app.innerHTML = '';
-    }
+    onChange.unsubscribe(this.appState);
+    onChange.unsubscribe(this.state);
   }
 }
 

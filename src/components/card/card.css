@@ -2,15 +2,26 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: grey;
-  width: 240px;
-  height: 400px;
-  padding: 20px;
+  margin-top: 16px;
 }
 
 .card__image {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
-  margin-bottom: 30px;
+  height: 140px;
+}
+
+.card__info {
+  display: flex;
+  flex-direction: column;
+  background: var(--black);
+  color: var(--white);
+  min-height: 150px;
+  padding: 5px;
+}
+
+.card__footer {
+  margin-top: auto;
+  display: flex;
 }

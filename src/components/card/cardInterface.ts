@@ -3,7 +3,7 @@ export interface CardsState {
   author_key: string[];
   author_name: string[];
   cover_edition_key: string;
-  key: number;
+  key: string;
   subject: string[];
 
   title: string;

@@ -1,6 +1,6 @@
 import MainView, { Abstract } from './views/mainView/mainView';
 export interface AppState {
-  favorites: string[]; // Define your app state with correct properties
+  favorites: { key: string }[];
 }
 
 interface AppComponent {
