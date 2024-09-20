@@ -1,6 +1,8 @@
 import MainView, { Abstract } from './views/mainView/mainView';
+import { CardsState } from './components/card/cardInterface';
+import FavoritesView from './views/favorites/favorites';
 export interface AppState {
-  favorites: { key: string }[];
+  favorites: CardsState[];
 }
 
 interface AppComponent {
@@ -17,7 +19,10 @@ class App implements AppComponent {
   };
   private currentView: Abstract | null = null; // Declare currentView as a class property
 
-  routes: Route[] = [{ path: '', view: MainView }];
+  routes: Route[] = [
+    { path: '', view: MainView },
+    { path: '#favorites', view: FavoritesView },
+  ];
   constructor() {
     window.addEventListener('hashchange', this.route.bind(this));
     this.route();

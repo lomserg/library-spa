@@ -34,7 +34,10 @@ class MainView extends AbstractView implements Abstract {
     this.state = onChange(this.state, this.stateHook.bind(this));
     this.setTitle('Поиск книг'); // Use setTitle correctly, assuming it's implemented in AbstractView
   }
-
+  destroy(): void {
+    onChange.unsubscribe(this.appState);
+    onChange.unsubscribe(this.state);
+  }
   // Hook to handle appState changes
   appStateHook(path: string) {
     if (path === 'favorites') {
@@ -93,11 +96,6 @@ class MainView extends AbstractView implements Abstract {
     const header = new Header(this.appState);
     const headerHtml = header.render();
     this.app?.prepend(headerHtml);
-  }
-
-  destroy(): void {
-    onChange.unsubscribe(this.appState);
-    onChange.unsubscribe(this.state);
   }
 }
 

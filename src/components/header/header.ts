@@ -12,9 +12,9 @@ export class Header extends DivComponent {
     this.el.innerHTML = '';
     this.el.classList.add('header');
     this.el.innerHTML = `
-    <div>
+    <a href='#'>
     <img src='/static/logo.svg' alt='logo'>
-    </div>
+    </a>
     <div class='menu'>
       <a class='menu__item' href='#'>
           <img src='/static/search.svg' alt='иконка поиска'>

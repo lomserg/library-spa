@@ -2,6 +2,7 @@ import { DivComponent } from '../../common/div-component';
 import { AppState } from '../../app';
 import './card.css';
 import { CardsState } from './cardInterface';
+
 export class Card extends DivComponent {
   appState: AppState;
   cardsState: CardsState;
@@ -14,12 +15,19 @@ export class Card extends DivComponent {
   addFavorites() {
     // Check if a card with the same key is already in favorites
     if (
-      !this.appState.favorites.some((fav) => fav.key === this.cardsState.key)
+      !this.appState.favorites.find((fav) => fav.key === this.cardsState.key)
     ) {
-      this.appState.favorites.push(this.cardsState);
+      this.appState.favorites.push({
+        key: this.cardsState.key,
+        author_key: this.cardsState.author_key,
+        author_name: this.cardsState.author_name,
+        cover_edition_key: this.cardsState.cover_edition_key,
+        subject: this.cardsState.subject,
+        title: this.cardsState.title,
+      });
+      this.render(); // Re-render to update the button state
     }
   }
-
   deleteFavorites() {
     this.appState.favorites = this.appState.favorites.filter(
       (b) => b.key !== this.cardsState.key,
@@ -31,9 +39,10 @@ export class Card extends DivComponent {
 
   render(): HTMLDivElement {
     this.el.classList.add('card');
-    const isFavorite = this.appState.favorites.some(
+    const isFavorite = this.appState.favorites.find(
       (fav) => fav.key === this.cardsState.key,
     );
+    console.log(isFavorite);
     // const existInFav = this.appState.favorites.find(
     //   (b) => b.key === this.cardsState.key,
     // );
@@ -63,7 +72,6 @@ export class Card extends DivComponent {
       this.el
         .querySelector('button')
         ?.addEventListener('click', this.addFavorites.bind(this));
-      console.log(this.appState.favorites);
     }
 
     return this.el;

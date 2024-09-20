@@ -1,21 +1,13 @@
 import { AbstractView } from '../../common/view';
 import onChange from 'on-change';
 import { Header } from '../../components/header/header';
-// import { CardList } from '../../components/card-list/cardList';
-import { CardsState } from '../../components/card/cardInterface';
+import { CardList } from '../../components/card-list/cardList';
 import { AppState } from '../../app';
-export interface Abstract {
+import { MainState } from '../mainView/mainView';
+interface Abstract {
   setTitle: (title: string) => void;
   render: () => void;
   destroy: () => void;
-}
-
-export interface MainState {
-  list: CardsState[];
-  numFound: number;
-  loading: boolean;
-  searchQuery?: string; // 'undefined' is implicit for optional properties
-  offSet: number;
 }
 
 class FavoritesView extends AbstractView implements Abstract {
@@ -39,12 +31,18 @@ class FavoritesView extends AbstractView implements Abstract {
       this.app.innerHTML = '';
     }
     this.app?.append(main);
-    // const cardList = new CardList(this.appState, {
-    //   list: this.appState.favorites,
-    // });
-    // const cardListHtml = cardList.render();
+    // Create a MainState object for the favorites view
+    const favoritesState: MainState = {
+      list: this.appState.favorites, // The favorites list
+      numFound: this.appState.favorites.length, // The number of favorites
+      loading: false, // No need for loading in this case
+      offSet: 0, // Optional, could be left as default
+    };
 
-    // main.append(cardListHtml);
+    const cardList = new CardList(this.appState, favoritesState);
+    const cardListHtml = cardList.render();
+
+    main.append(cardListHtml);
 
     this.renderHeader();
   }
